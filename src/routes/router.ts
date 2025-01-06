@@ -113,6 +113,11 @@ function errorHandled(middleware: Middleware): Middleware {
         if (ctx.sentry !== undefined) {
           ctx.sentry.captureException(err);
         }
+
+        if (ctx.env.LOG_ERRORS !== undefined && ctx.env.LOG_ERRORS) {
+          console.error(err);
+        }
+
         return next();
       }
     },
