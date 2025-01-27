@@ -66,7 +66,6 @@ function buildMiddlewareChain(middlewares: Middleware[]): MiddlewareChain {
   };
 
   // Link the middlewares in reverse order for simplicity sakes
-  // @ts-expect-error TODO: update types so toReversed is recognized
   for (const middleware of middlewares.toReversed()) {
     const wrappedMiddleware = errorHandled(middleware);
 
@@ -89,7 +88,9 @@ async function callMiddlewareChain(
   ctx: Context
 ): Promise<Response> {
   // Parse url here so we don't have to do it multiple times later on
-  const url = parseUrl(request);
+  // TODO why isn't `parse` recognized
+  const url = URL.parse(request);
+
   if (url === undefined) {
     return responses.badRequest();
   }
